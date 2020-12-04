@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Redis学习笔记（二） | Gridea</title>
-<link rel="shortcut icon" href="https://edyip.github.io/favicon.ico?v=1607067985450">
+<link rel="shortcut icon" href="https://edyip.github.io/favicon.ico?v=1607090372019">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://edyip.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="Redis学习笔记（二） | Gridea - Atom Feed" href="https://edyip.github.io/atom.xml">
@@ -11,13 +11,32 @@
 
 
 
-    <meta name="description" content="数据类型
+    <meta name="description" content="单进程，单线程，单实例，并发很多的请求，如何变得很快的呢？
+
+正反向索引
+
+
+value数据类型
 string
-list
-hash
+
+字符串
+
+
 set
-sorted_sort
-..." />
+get
+append
+setrange
+getrange
+strlen
+
+
+数值
+
+
+incr
+
+
+bit..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -27,7 +46,7 @@ sorted_sort
       <div class="main-content">
         <div class="site-header">
   <a href="https://edyip.github.io">
-  <img class="avatar" src="https://edyip.github.io/images/avatar.png?v=1607067985450" alt="">
+  <img class="avatar" src="https://edyip.github.io/images/avatar.png?v=1607090372019" alt="">
   </a>
   <h1 class="site-title">
     Gridea
@@ -87,24 +106,165 @@ sorted_sort
                 2020-12-04
               </span>
               <span>
-                1 min read
+                2 min read
               </span>
               
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <h1 id="数据类型">数据类型</h1>
+                <h1 id="单进程单线程单实例并发很多的请求如何变得很快的呢">单进程，单线程，单实例，并发很多的请求，如何变得很快的呢？</h1>
+<figure data-type="image" tabindex="1"><img src="https://edyip.github.io/post-images/1607073627273.jpg" alt="单进程，单线程，单实例" loading="lazy"></figure>
+<h1 id="正反向索引">正反向索引</h1>
+<p><img src="https://edyip.github.io/post-images/1607075703792.jpg" alt="字符串" loading="lazy"><br>
+<img src="https://edyip.github.io/post-images/1607075707591.jpg" alt="列表" loading="lazy"></p>
+<h1 id="value数据类型">value数据类型</h1>
 <h2 id="string">string</h2>
+<ul>
+<li>字符串</li>
+</ul>
+<blockquote>
+<p>set<br>
+get<br>
+append<br>
+setrange<br>
+getrange<br>
+strlen</p>
+</blockquote>
+<ul>
+<li>数值</li>
+</ul>
+<blockquote>
+<p>incr</p>
+</blockquote>
+<ul>
+<li>bitmap</li>
+</ul>
+<blockquote>
+<p>setbit<br>
+bitcount<br>
+bitpos<br>
+bitop</p>
+</blockquote>
+<ul>
+<li>场景<br>
+<img src="https://edyip.github.io/post-images/1607069986263.jpg" alt="bitmap实用场景" loading="lazy"></li>
+</ul>
 <h2 id="list">list</h2>
+<ul>
+<li>指令</li>
+</ul>
+<blockquote>
+<p>lrange<br>
+lrem<br>
+linsert<br>
+llen</p>
+</blockquote>
+<ul>
+<li>栈（同向命令）</li>
+</ul>
+<blockquote>
+<p>lpush<br>
+lpop</p>
+</blockquote>
+<ul>
+<li>队列（反向命令）</li>
+</ul>
+<blockquote>
+<p>rpush<br>
+rpop</p>
+</blockquote>
+<ul>
+<li>数组</li>
+</ul>
+<blockquote>
+<p>lindex<br>
+lset</p>
+</blockquote>
+<ul>
+<li>阻塞、单播队列 FIFO</li>
+</ul>
+<blockquote>
+<p>blpop<br>
+brpop</p>
+</blockquote>
 <h2 id="hash">hash</h2>
+<ul>
+<li>map（k-v）</li>
+</ul>
+<blockquote>
+<p>hset<br>
+hmset<br>
+hget<br>
+hmget<br>
+hkeys<br>
+hvals<br>
+hgetall</p>
+</blockquote>
 <h2 id="set">set</h2>
+<p>*【无序】&amp;&amp;【随机性】放入的多少不同，元素存储的顺序不同去重</p>
+<blockquote>
+<p>sadd</p>
+</blockquote>
+<ul>
+<li>集合操作相当多</li>
+</ul>
+<blockquote>
+<p>sinter 交集<br>
+sinterstore dest k2 k3 (dest目标)<br>
+sunion 并集<br>
+sdiff 差集 k1 k2 左差集 k2 k1 右差集</p>
+</blockquote>
+<ul>
+<li>随机事件</li>
+</ul>
+<blockquote>
+<p>SRANDMEMBER  key  count<br>
+1. 正数：取出一个去重的结果集（不能超过已有集）<br>
+2. 负数：取出一个带重复的结果集，一定满足你要的数量<br>
+3. 0：不返回<br>
+<strong>抽奖</strong><br>
+人 &gt; 礼物，正数，去重，不超过数量<br>
+人 &lt; 礼物，负数，不去重，满足数量</p>
+</blockquote>
+<blockquote>
+<p>spop 取出一个</p>
+</blockquote>
 <h2 id="sorted_sort">sorted_sort</h2>
+<ul>
+<li>物理内存左小右大，不随命令发生变化</li>
+</ul>
+<blockquote>
+<p>zadd<br>
+zrange key 0 -1<br>
+zrange key 0 -1 withscores<br>
+zrange key 0 1 （从低到高，取前两位）<br>
+zrevrange key 0 1 （从高到低，取前两位）<br>
+zscore key name （取分值）<br>
+zrank key name （取排名）<br>
+zincrby （计算分值）</p>
+</blockquote>
+<ul>
+<li>集合操作 并集，交集</li>
+</ul>
+<blockquote>
+<p>权重/聚合指令<br>
+zunionstore unkey 2 key1 key2 （weights default 1 1） (aggregate default sum)</p>
+</blockquote>
+<ul>
+<li>排序是怎么实现的，增删改查的速度？</li>
+</ul>
+<blockquote>
+<p>skip list 跳跃表<br>
+<img src="https://edyip.github.io/post-images/1607071790824.jpg" alt="skip list" loading="lazy"></p>
+</blockquote>
 
               </div>
               <div class="toc-container">
                 <ul class="markdownIt-TOC">
-<li><a href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">数据类型</a>
+<li><a href="#%E5%8D%95%E8%BF%9B%E7%A8%8B%E5%8D%95%E7%BA%BF%E7%A8%8B%E5%8D%95%E5%AE%9E%E4%BE%8B%E5%B9%B6%E5%8F%91%E5%BE%88%E5%A4%9A%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A6%82%E4%BD%95%E5%8F%98%E5%BE%97%E5%BE%88%E5%BF%AB%E7%9A%84%E5%91%A2">单进程，单线程，单实例，并发很多的请求，如何变得很快的呢？</a></li>
+<li><a href="#%E6%AD%A3%E5%8F%8D%E5%90%91%E7%B4%A2%E5%BC%95">正反向索引</a></li>
+<li><a href="#value%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">value数据类型</a>
 <ul>
 <li><a href="#string">string</a></li>
 <li><a href="#list">list</a></li>

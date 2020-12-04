@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://edyip.github.io</id>
     <title>Gridea</title>
-    <updated>2020-12-04T07:46:32.703Z</updated>
+    <updated>2020-12-04T13:59:37.113Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://edyip.github.io"/>
     <link rel="self" href="https://edyip.github.io/atom.xml"/>
@@ -11,17 +11,192 @@
     <icon>https://edyip.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Gridea</rights>
     <entry>
+        <title type="html"><![CDATA[Redis学习笔记（三）]]></title>
+        <id>https://edyip.github.io/post/redis-xue-xi-bi-ji-san/</id>
+        <link href="https://edyip.github.io/post/redis-xue-xi-bi-ji-san/">
+        </link>
+        <updated>2020-12-04T11:07:33.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="pubsub">Pub/Sub</h1>
+<ul>
+<li>pushlish change message</li>
+<li>subscribe</li>
+</ul>
+<h2 id="chatroom">Chatroom</h2>
+<ul>
+<li>
+<p>client单调用redis，单调用kafka<br>
+<img src="https://edyip.github.io/post-images/1607083166572.jpg" alt="方案1" loading="lazy"></p>
+</li>
+<li>
+<p>双redis方案，一个发布订阅，另一个订阅到kafka<br>
+<img src="https://edyip.github.io/post-images/1607083645919.jpg" alt="方案2" loading="lazy"></p>
+</li>
+</ul>
+<h1 id="事务">事务</h1>
+<ul>
+<li>multi 开启事务</li>
+<li>exec 执行事务</li>
+<li>discard 取消事务</li>
+<li>watch 监控</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://edyip.github.io/post-images/1607083825739.jpg" alt="多客户端事务" loading="lazy"></figure>
+<ul>
+<li>多客户端事务，谁的exec先达到，谁先执行</li>
+<li>watch实现乐观锁，client的watch监控key，监控的key被改变，事务不执行</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Redis学习笔记（二）]]></title>
         <id>https://edyip.github.io/post/redis-xue-xi-bi-ji-er/</id>
         <link href="https://edyip.github.io/post/redis-xue-xi-bi-ji-er/">
         </link>
         <updated>2020-12-04T07:10:50.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="数据类型">数据类型</h1>
+        <content type="html"><![CDATA[<h1 id="单进程单线程单实例并发很多的请求如何变得很快的呢">单进程，单线程，单实例，并发很多的请求，如何变得很快的呢？</h1>
+<figure data-type="image" tabindex="1"><img src="https://edyip.github.io/post-images/1607073627273.jpg" alt="单进程，单线程，单实例" loading="lazy"></figure>
+<h1 id="正反向索引">正反向索引</h1>
+<p><img src="https://edyip.github.io/post-images/1607075703792.jpg" alt="字符串" loading="lazy"><br>
+<img src="https://edyip.github.io/post-images/1607075707591.jpg" alt="列表" loading="lazy"></p>
+<h1 id="value数据类型">value数据类型</h1>
 <h2 id="string">string</h2>
+<ul>
+<li>字符串</li>
+</ul>
+<blockquote>
+<p>set<br>
+get<br>
+append<br>
+setrange<br>
+getrange<br>
+strlen</p>
+</blockquote>
+<ul>
+<li>数值</li>
+</ul>
+<blockquote>
+<p>incr</p>
+</blockquote>
+<ul>
+<li>bitmap</li>
+</ul>
+<blockquote>
+<p>setbit<br>
+bitcount<br>
+bitpos<br>
+bitop</p>
+</blockquote>
+<ul>
+<li>场景<br>
+<img src="https://edyip.github.io/post-images/1607069986263.jpg" alt="bitmap实用场景" loading="lazy"></li>
+</ul>
 <h2 id="list">list</h2>
+<ul>
+<li>指令</li>
+</ul>
+<blockquote>
+<p>lrange<br>
+lrem<br>
+linsert<br>
+llen</p>
+</blockquote>
+<ul>
+<li>栈（同向命令）</li>
+</ul>
+<blockquote>
+<p>lpush<br>
+lpop</p>
+</blockquote>
+<ul>
+<li>队列（反向命令）</li>
+</ul>
+<blockquote>
+<p>rpush<br>
+rpop</p>
+</blockquote>
+<ul>
+<li>数组</li>
+</ul>
+<blockquote>
+<p>lindex<br>
+lset</p>
+</blockquote>
+<ul>
+<li>阻塞、单播队列 FIFO</li>
+</ul>
+<blockquote>
+<p>blpop<br>
+brpop</p>
+</blockquote>
 <h2 id="hash">hash</h2>
+<ul>
+<li>map（k-v）</li>
+</ul>
+<blockquote>
+<p>hset<br>
+hmset<br>
+hget<br>
+hmget<br>
+hkeys<br>
+hvals<br>
+hgetall</p>
+</blockquote>
 <h2 id="set">set</h2>
+<p>*【无序】&amp;&amp;【随机性】放入的多少不同，元素存储的顺序不同去重</p>
+<blockquote>
+<p>sadd</p>
+</blockquote>
+<ul>
+<li>集合操作相当多</li>
+</ul>
+<blockquote>
+<p>sinter 交集<br>
+sinterstore dest k2 k3 (dest目标)<br>
+sunion 并集<br>
+sdiff 差集 k1 k2 左差集 k2 k1 右差集</p>
+</blockquote>
+<ul>
+<li>随机事件</li>
+</ul>
+<blockquote>
+<p>SRANDMEMBER  key  count<br>
+1. 正数：取出一个去重的结果集（不能超过已有集）<br>
+2. 负数：取出一个带重复的结果集，一定满足你要的数量<br>
+3. 0：不返回<br>
+<strong>抽奖</strong><br>
+人 &gt; 礼物，正数，去重，不超过数量<br>
+人 &lt; 礼物，负数，不去重，满足数量</p>
+</blockquote>
+<blockquote>
+<p>spop 取出一个</p>
+</blockquote>
 <h2 id="sorted_sort">sorted_sort</h2>
+<ul>
+<li>物理内存左小右大，不随命令发生变化</li>
+</ul>
+<blockquote>
+<p>zadd<br>
+zrange key 0 -1<br>
+zrange key 0 -1 withscores<br>
+zrange key 0 1 （从低到高，取前两位）<br>
+zrevrange key 0 1 （从高到低，取前两位）<br>
+zscore key name （取分值）<br>
+zrank key name （取排名）<br>
+zincrby （计算分值）</p>
+</blockquote>
+<ul>
+<li>集合操作 并集，交集</li>
+</ul>
+<blockquote>
+<p>权重/聚合指令<br>
+zunionstore unkey 2 key1 key2 （weights default 1 1） (aggregate default sum)</p>
+</blockquote>
+<ul>
+<li>排序是怎么实现的，增删改查的速度？</li>
+</ul>
+<blockquote>
+<p>skip list 跳跃表<br>
+<img src="https://edyip.github.io/post-images/1607071790824.jpg" alt="skip list" loading="lazy"></p>
+</blockquote>
 ]]></content>
     </entry>
     <entry>
@@ -31,7 +206,7 @@
         </link>
         <updated>2020-12-04T03:21:07.000Z</updated>
         <content type="html"><![CDATA[<h1 id="基础知识">基础知识</h1>
-<figure data-type="image" tabindex="1"><img src="https://edyip.github.io/post-images/1607055268283.jpg" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://edyip.github.io/post-images/1607055268283.jpg" alt="数据存储" loading="lazy"></figure>
 <h2 id="磁盘">磁盘</h2>
 <p>1.寻址：ms<br>
 2.带宽：G/M</p>
@@ -60,8 +235,8 @@
 2-2. 并发大的时候会受硬盘带宽影响速度</p>
 <h2 id="db技术选型">DB技术选型</h2>
 <p><a href="https://db-engines.com/en/">db-engines</a></p>
-<h2 id="memcached与redis">memcached与redis</h2>
-<figure data-type="image" tabindex="2"><img src="https://edyip.github.io/post-images/1607057444113.jpg" alt="" loading="lazy"></figure>
+<h3 id="memcached与redis">memcached与redis</h3>
+<figure data-type="image" tabindex="2"><img src="https://edyip.github.io/post-images/1607057444113.jpg" alt="memcached与redis" loading="lazy"></figure>
 <ul>
 <li>json表示很复杂的数据结构</li>
 <li>世界上有3种数据表示</li>
@@ -73,15 +248,15 @@
 <li>k = {x}  k = [{},{}]</li>
 </ol>
 </blockquote>
-<p><img src="https://edyip.github.io/post-images/1607058772028.jpg" alt="" loading="lazy"><br>
-<strong>计算向数据移动</strong><br>
+<h3 id="计算向数据移动">计算向数据移动</h3>
+<p><img src="https://edyip.github.io/post-images/1607058772028.jpg" alt="计算向数据移动" loading="lazy"><br>
 memcached计算解析json在client<br>
 redis计算解析json在redis service，将少量计算完的数据，通过网络IO传递给client</p>
 <h2 id="kernel的bio向nio进化">kernel的BIO向NIO进化</h2>
 <h3 id="bio">BIO</h3>
 <p>socket<br>
 blocking<br>
-<img src="https://edyip.github.io/post-images/1607061461715.jpg" alt="" loading="lazy"></p>
+<img src="https://edyip.github.io/post-images/1607061461715.jpg" alt="BIO" loading="lazy"></p>
 <h3 id="同步非阻塞-nio">同步非阻塞 NIO</h3>
 <p>socket<br>
 fd nonblock (fd文件编号符)<br>
@@ -89,17 +264,17 @@ fd nonblock (fd文件编号符)<br>
 如果有1000fds<br>
 代表用户进程轮询调用1000次kernel<br>
 成本问题<br>
-<img src="https://edyip.github.io/post-images/1607061682325.jpg" alt="" loading="lazy"></p>
-<h3 id="多路复用-nio">多路复用 NIO</h3>
+<img src="https://edyip.github.io/post-images/1607061682325.jpg" alt="同步非阻塞 NIO" loading="lazy"></p>
+<h3 id="多路复用-nio一">多路复用 NIO（一）</h3>
 <p>内核select，1000fds传给select，内核监听返回有数据的fds，再去调用read<br>
 问题：<br>
 用户空间和内核空间，fds相关数据拷来拷去<br>
-<img src="https://edyip.github.io/post-images/1607062646300.jpg" alt="" loading="lazy"></p>
-<h3 id="多路复用-nio-2">多路复用 NIO</h3>
+<img src="https://edyip.github.io/post-images/1607062646300.jpg" alt=" 多路复用 NIO" loading="lazy"></p>
+<h3 id="多路复用-nio二">多路复用 NIO（二）</h3>
 <p>内核mmap，实现共享空间（用户空间&lt;-&gt;内核空间），1000fds写入共享空间，内核将缓存中到达数据放入链表，链表中有数据，用户空间直接发生读取fds<br>
-<img src="https://edyip.github.io/post-images/1607063067623.jpg" alt="" loading="lazy"></p>
+<img src="https://edyip.github.io/post-images/1607063067623.jpg" alt="多路复用 NIO" loading="lazy"></p>
 <h3 id="sendfile">sendfile</h3>
-<figure data-type="image" tabindex="3"><img src="https://edyip.github.io/post-images/1607065472233.jpg" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://edyip.github.io/post-images/1607065472233.jpg" alt="sendfile" loading="lazy"></figure>
 <h2 id="bio弊端">BIO弊端</h2>
 <p>JVM：一个线程的成本 1MB （线程栈）<br>
 线程多的弊端：<br>

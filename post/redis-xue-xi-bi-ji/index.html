@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Redis学习笔记(一) | Gridea</title>
-<link rel="shortcut icon" href="https://edyip.github.io/favicon.ico?v=1607067985450">
+<link rel="shortcut icon" href="https://edyip.github.io/favicon.ico?v=1607090372019">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://edyip.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="Redis学习笔记(一) | Gridea - Atom Feed" href="https://edyip.github.io/atom.xml">
@@ -33,7 +33,7 @@ I/O buffer： 成本问题
       <div class="main-content">
         <div class="site-header">
   <a href="https://edyip.github.io">
-  <img class="avatar" src="https://edyip.github.io/images/avatar.png?v=1607067985450" alt="">
+  <img class="avatar" src="https://edyip.github.io/images/avatar.png?v=1607090372019" alt="">
   </a>
   <h1 class="site-title">
     Gridea
@@ -101,7 +101,7 @@ I/O buffer： 成本问题
             <div class="post-content-wrapper">
               <div class="post-content">
                 <h1 id="基础知识">基础知识</h1>
-<figure data-type="image" tabindex="1"><img src="https://edyip.github.io/post-images/1607055268283.jpg" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://edyip.github.io/post-images/1607055268283.jpg" alt="数据存储" loading="lazy"></figure>
 <h2 id="磁盘">磁盘</h2>
 <p>1.寻址：ms<br>
 2.带宽：G/M</p>
@@ -130,8 +130,8 @@ I/O buffer： 成本问题
 2-2. 并发大的时候会受硬盘带宽影响速度</p>
 <h2 id="db技术选型">DB技术选型</h2>
 <p><a href="https://db-engines.com/en/">db-engines</a></p>
-<h2 id="memcached与redis">memcached与redis</h2>
-<figure data-type="image" tabindex="2"><img src="https://edyip.github.io/post-images/1607057444113.jpg" alt="" loading="lazy"></figure>
+<h3 id="memcached与redis">memcached与redis</h3>
+<figure data-type="image" tabindex="2"><img src="https://edyip.github.io/post-images/1607057444113.jpg" alt="memcached与redis" loading="lazy"></figure>
 <ul>
 <li>json表示很复杂的数据结构</li>
 <li>世界上有3种数据表示</li>
@@ -143,15 +143,15 @@ I/O buffer： 成本问题
 <li>k = {x}  k = [{},{}]</li>
 </ol>
 </blockquote>
-<p><img src="https://edyip.github.io/post-images/1607058772028.jpg" alt="" loading="lazy"><br>
-<strong>计算向数据移动</strong><br>
+<h3 id="计算向数据移动">计算向数据移动</h3>
+<p><img src="https://edyip.github.io/post-images/1607058772028.jpg" alt="计算向数据移动" loading="lazy"><br>
 memcached计算解析json在client<br>
 redis计算解析json在redis service，将少量计算完的数据，通过网络IO传递给client</p>
 <h2 id="kernel的bio向nio进化">kernel的BIO向NIO进化</h2>
 <h3 id="bio">BIO</h3>
 <p>socket<br>
 blocking<br>
-<img src="https://edyip.github.io/post-images/1607061461715.jpg" alt="" loading="lazy"></p>
+<img src="https://edyip.github.io/post-images/1607061461715.jpg" alt="BIO" loading="lazy"></p>
 <h3 id="同步非阻塞-nio">同步非阻塞 NIO</h3>
 <p>socket<br>
 fd nonblock (fd文件编号符)<br>
@@ -159,17 +159,17 @@ fd nonblock (fd文件编号符)<br>
 如果有1000fds<br>
 代表用户进程轮询调用1000次kernel<br>
 成本问题<br>
-<img src="https://edyip.github.io/post-images/1607061682325.jpg" alt="" loading="lazy"></p>
-<h3 id="多路复用-nio">多路复用 NIO</h3>
+<img src="https://edyip.github.io/post-images/1607061682325.jpg" alt="同步非阻塞 NIO" loading="lazy"></p>
+<h3 id="多路复用-nio一">多路复用 NIO（一）</h3>
 <p>内核select，1000fds传给select，内核监听返回有数据的fds，再去调用read<br>
 问题：<br>
 用户空间和内核空间，fds相关数据拷来拷去<br>
-<img src="https://edyip.github.io/post-images/1607062646300.jpg" alt="" loading="lazy"></p>
-<h3 id="多路复用-nio-2">多路复用 NIO</h3>
+<img src="https://edyip.github.io/post-images/1607062646300.jpg" alt=" 多路复用 NIO" loading="lazy"></p>
+<h3 id="多路复用-nio二">多路复用 NIO（二）</h3>
 <p>内核mmap，实现共享空间（用户空间&lt;-&gt;内核空间），1000fds写入共享空间，内核将缓存中到达数据放入链表，链表中有数据，用户空间直接发生读取fds<br>
-<img src="https://edyip.github.io/post-images/1607063067623.jpg" alt="" loading="lazy"></p>
+<img src="https://edyip.github.io/post-images/1607063067623.jpg" alt="多路复用 NIO" loading="lazy"></p>
 <h3 id="sendfile">sendfile</h3>
-<figure data-type="image" tabindex="3"><img src="https://edyip.github.io/post-images/1607065472233.jpg" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://edyip.github.io/post-images/1607065472233.jpg" alt="sendfile" loading="lazy"></figure>
 <h2 id="bio弊端">BIO弊端</h2>
 <p>JVM：一个线程的成本 1MB （线程栈）<br>
 线程多的弊端：<br>
@@ -191,14 +191,18 @@ fd nonblock (fd文件编号符)<br>
 <li><a href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8%E5%BE%88%E5%A4%A7%E6%80%A7%E8%83%BD%E4%B8%8B%E9%99%8D">数据库表很大，性能下降？</a></li>
 </ul>
 </li>
-<li><a href="#db%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B">DB技术选型</a></li>
+<li><a href="#db%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B">DB技术选型</a>
+<ul>
 <li><a href="#memcached%E4%B8%8Eredis">memcached与redis</a></li>
+<li><a href="#%E8%AE%A1%E7%AE%97%E5%90%91%E6%95%B0%E6%8D%AE%E7%A7%BB%E5%8A%A8">计算向数据移动</a></li>
+</ul>
+</li>
 <li><a href="#kernel%E7%9A%84bio%E5%90%91nio%E8%BF%9B%E5%8C%96">kernel的BIO向NIO进化</a>
 <ul>
 <li><a href="#bio">BIO</a></li>
 <li><a href="#%E5%90%8C%E6%AD%A5%E9%9D%9E%E9%98%BB%E5%A1%9E-nio">同步非阻塞 NIO</a></li>
-<li><a href="#%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8-nio">多路复用 NIO</a></li>
-<li><a href="#%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8-nio-2">多路复用 NIO</a></li>
+<li><a href="#%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8-nio%E4%B8%80">多路复用 NIO（一）</a></li>
+<li><a href="#%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8-nio%E4%BA%8C">多路复用 NIO（二）</a></li>
 <li><a href="#sendfile">sendfile</a></li>
 </ul>
 </li>
