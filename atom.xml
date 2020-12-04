@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://edyip.github.io</id>
     <title>Gridea</title>
-    <updated>2020-12-04T04:26:43.373Z</updated>
+    <updated>2020-12-04T07:06:14.012Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://edyip.github.io"/>
     <link rel="self" href="https://edyip.github.io/atom.xml"/>
@@ -11,7 +11,7 @@
     <icon>https://edyip.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Gridea</rights>
     <entry>
-        <title type="html"><![CDATA[Redis学习笔记]]></title>
+        <title type="html"><![CDATA[Redis学习笔记(一)]]></title>
         <id>https://edyip.github.io/post/redis-xue-xi-bi-ji/</id>
         <link href="https://edyip.github.io/post/redis-xue-xi-bi-ji/">
         </link>
@@ -40,11 +40,52 @@
 <p>内存：维护一个B+Tree<br>
 磁盘：存储数据和索引</p>
 <h3 id="数据库表很大性能下降">数据库表很大，性能下降？</h3>
-<p>如果表有索引<br>
-增删改变慢</p>
-<h4 id="查询速度呢">查询速度呢？</h4>
-<p>1，1个或少量查询依然很快<br>
-2，并发大的时候会受硬盘带宽影响速度</p>
+<p>1.如果表有索引，增删改变慢<br>
+<strong>查询速度呢？</strong><br>
+2-1. 1个或少量查询依然很快<br>
+2-2. 并发大的时候会受硬盘带宽影响速度</p>
+<h2 id="db技术选型">DB技术选型</h2>
+<p><a href="https://db-engines.com/en/">db-engines</a></p>
+<h2 id="memcached与redis">memcached与redis</h2>
+<figure data-type="image" tabindex="2"><img src="https://edyip.github.io/post-images/1607057444113.jpg" alt="" loading="lazy"></figure>
+<ul>
+<li>json表示很复杂的数据结构</li>
+<li>世界上有3种数据表示</li>
+</ul>
+<blockquote>
+<ol>
+<li>k = a k =1</li>
+<li>k = [1,2,3] k = [a,x,f]</li>
+<li>k = {x}  k = [{},{}]</li>
+</ol>
+</blockquote>
+<p><img src="https://edyip.github.io/post-images/1607058772028.jpg" alt="" loading="lazy"><br>
+<strong>计算向数据移动</strong><br>
+memcached计算解析json在client<br>
+redis计算解析json在redis service，将少量计算完的数据，通过网络IO传递给client</p>
+<h2 id="kernel的bio向nio进化">kernel的BIO向NIO进化</h2>
+<h3 id="bio">BIO</h3>
+<p>socket<br>
+blocking<br>
+<img src="https://edyip.github.io/post-images/1607061461715.jpg" alt="" loading="lazy"></p>
+<h3 id="同步非阻塞-nio">同步非阻塞 NIO</h3>
+<p>socket<br>
+fd nonblock (fd文件编号符)<br>
+问题：<br>
+如果有1000fds<br>
+代表用户进程轮询调用1000次kernel<br>
+成本问题<br>
+<img src="https://edyip.github.io/post-images/1607061682325.jpg" alt="" loading="lazy"></p>
+<h3 id="多路复用-nio">多路复用 NIO</h3>
+<p>内核select，1000fds传给select，内核监听返回有数据的fds，再去调用read<br>
+问题：<br>
+用户空间和内核空间，fds相关数据拷来拷去<br>
+<img src="https://edyip.github.io/post-images/1607062646300.jpg" alt="" loading="lazy"></p>
+<h3 id="多路复用-nio-2">多路复用 NIO</h3>
+<p>内核mmap，实现共享空间（用户空间&lt;-&gt;内核空间），1000fds写入共享空间，内核将缓存中到达数据放入链表，链表中有数据，用户空间直接发生读取fds<br>
+<img src="https://edyip.github.io/post-images/1607063067623.jpg" alt="" loading="lazy"></p>
+<h3 id="sendfile">sendfile</h3>
+<figure data-type="image" tabindex="3"><img src="https://edyip.github.io/post-images/1607065472233.jpg" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
     <entry>
