@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Redis学习笔记 | Gridea</title>
-<link rel="shortcut icon" href="https://edyip.github.io/favicon.ico?v=1607053812867">
+<link rel="shortcut icon" href="https://edyip.github.io/favicon.ico?v=1607055157754">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://edyip.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="Redis学习笔记 | Gridea - Atom Feed" href="https://edyip.github.io/atom.xml">
@@ -12,17 +12,18 @@
 
 
     <meta name="description" content="基础常识
+
 磁盘
 1.寻址：ms
 2.带宽：G/M
-##内存
+内存
 1.寻址：ns
 2.带宽：很大
 时间单位
 秒&gt;毫秒&gt;微妙&gt;纳秒
 内存寻址比硬盘寻址快10万倍
-I/O buffer 成本问题
-磁盘与磁道、扇区，一扇区512byt..." />
+I/O buffer： 成本问题
+磁盘与磁道、扇区，一扇区512Byt..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -32,7 +33,7 @@ I/O buffer 成本问题
       <div class="main-content">
         <div class="site-header">
   <a href="https://edyip.github.io">
-  <img class="avatar" src="https://edyip.github.io/images/avatar.png?v=1607053812867" alt="">
+  <img class="avatar" src="https://edyip.github.io/images/avatar.png?v=1607055157754" alt="">
   </a>
   <h1 class="site-title">
     Gridea
@@ -100,31 +101,33 @@ I/O buffer 成本问题
             <div class="post-content-wrapper">
               <div class="post-content">
                 <h1 id="基础常识">基础常识</h1>
+<figure data-type="image" tabindex="1"><img src="https://edyip.github.io/post-images/1607055102094.jpg" alt="" loading="lazy"></figure>
 <h2 id="磁盘">磁盘</h2>
 <p>1.寻址：ms<br>
-2.带宽：G/M<br>
-##内存<br>
-1.寻址：ns<br>
-2.带宽：很大<br>
-时间单位<br>
-秒&gt;毫秒&gt;微妙&gt;纳秒<br>
-内存寻址比硬盘寻址快10万倍<br>
-I/O buffer 成本问题<br>
-磁盘与磁道、扇区，一扇区512byte,带来的成本变大：索引<br>
-4K对齐，操作系统，无论读多少都是最少4K从磁盘拿<br>
+2.带宽：G/M</p>
+<h2 id="内存">内存</h2>
+<p>1.寻址：ns<br>
+2.带宽：很大</p>
+<h2 id="时间单位">时间单位</h2>
+<p>秒&gt;毫秒&gt;微妙&gt;纳秒<br>
+内存寻址比硬盘寻址快10万倍</p>
+<h2 id="io-buffer-成本问题">I/O buffer： 成本问题</h2>
+<p>磁盘与磁道、扇区，一扇区512Byte带来的成本变大：索引<br>
+4K对齐，操作系统，无论读多少，都是最少4K从磁盘拿<br>
 随着文件变大，速度变慢，IO成为瓶颈</p>
 <h2 id="数据库">数据库</h2>
 <p>data page 4k<br>
 关系型数据库建表： 必须给出schema<br>
-类型： 建表宽度<br>
+类型： 字节宽度<br>
 存：倾向于行级存储<br>
 内存维护一个B+TREE<br>
-磁盘：存储数据和索引<br>
-表很大的时候，性能下降？<br>
-1.如果有索引，增删改变慢<br>
-2.查询速度<br>
-2.1如果一个或少量查询，性能依然快，因为where条件走的依然是一个data page<br>
-2.2当并发量来了，可能不是加载一个data page到内存，受硬盘带宽影响，有可能性能下降(IOPS)</p>
+磁盘：存储数据和索引</p>
+<h3 id="数据库表很大性能下降">数据库：表很大，性能下降？</h3>
+<p>如果表有索引<br>
+增删改变慢</p>
+<h3 id="查询速度呢">查询速度呢？</h3>
+<p>1，1个或少量查询依然很快<br>
+2，并发大的时候会受硬盘带宽影响速度</p>
 
               </div>
               <div class="toc-container">
@@ -132,7 +135,15 @@ I/O buffer 成本问题<br>
 <li><a href="#%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%AF%86">基础常识</a>
 <ul>
 <li><a href="#%E7%A3%81%E7%9B%98">磁盘</a></li>
-<li><a href="#%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a></li>
+<li><a href="#%E5%86%85%E5%AD%98">内存</a></li>
+<li><a href="#%E6%97%B6%E9%97%B4%E5%8D%95%E4%BD%8D">时间单位</a></li>
+<li><a href="#io-buffer-%E6%88%90%E6%9C%AC%E9%97%AE%E9%A2%98">I/O buffer： 成本问题</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+<ul>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8%E5%BE%88%E5%A4%A7%E6%80%A7%E8%83%BD%E4%B8%8B%E9%99%8D">数据库：表很大，性能下降？</a></li>
+<li><a href="#%E6%9F%A5%E8%AF%A2%E9%80%9F%E5%BA%A6%E5%91%A2">查询速度呢？</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
