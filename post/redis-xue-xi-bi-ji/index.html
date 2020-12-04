@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Redis学习笔记(一) | Gridea</title>
-<link rel="shortcut icon" href="https://edyip.github.io/favicon.ico?v=1607065570448">
+<link rel="shortcut icon" href="https://edyip.github.io/favicon.ico?v=1607067985450">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://edyip.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="Redis学习笔记(一) | Gridea - Atom Feed" href="https://edyip.github.io/atom.xml">
@@ -33,7 +33,7 @@ I/O buffer： 成本问题
       <div class="main-content">
         <div class="site-header">
   <a href="https://edyip.github.io">
-  <img class="avatar" src="https://edyip.github.io/images/avatar.png?v=1607065570448" alt="">
+  <img class="avatar" src="https://edyip.github.io/images/avatar.png?v=1607067985450" alt="">
   </a>
   <h1 class="site-title">
     Gridea
@@ -170,6 +170,11 @@ fd nonblock (fd文件编号符)<br>
 <img src="https://edyip.github.io/post-images/1607063067623.jpg" alt="" loading="lazy"></p>
 <h3 id="sendfile">sendfile</h3>
 <figure data-type="image" tabindex="3"><img src="https://edyip.github.io/post-images/1607065472233.jpg" alt="" loading="lazy"></figure>
+<h2 id="bio弊端">BIO弊端</h2>
+<p>JVM：一个线程的成本 1MB （线程栈）<br>
+线程多的弊端：<br>
+1.线程多了调度成本CPU浪费<br>
+2.内存成本</p>
 
               </div>
               <div class="toc-container">
@@ -197,6 +202,7 @@ fd nonblock (fd文件编号符)<br>
 <li><a href="#sendfile">sendfile</a></li>
 </ul>
 </li>
+<li><a href="#bio%E5%BC%8A%E7%AB%AF">BIO弊端</a></li>
 </ul>
 </li>
 </ul>

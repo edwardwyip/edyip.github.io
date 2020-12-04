@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://edyip.github.io</id>
     <title>Gridea</title>
-    <updated>2020-12-04T07:08:34.177Z</updated>
+    <updated>2020-12-04T07:46:32.703Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://edyip.github.io"/>
     <link rel="self" href="https://edyip.github.io/atom.xml"/>
@@ -10,6 +10,20 @@
     <logo>https://edyip.github.io/images/avatar.png</logo>
     <icon>https://edyip.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[Redis学习笔记（二）]]></title>
+        <id>https://edyip.github.io/post/redis-xue-xi-bi-ji-er/</id>
+        <link href="https://edyip.github.io/post/redis-xue-xi-bi-ji-er/">
+        </link>
+        <updated>2020-12-04T07:10:50.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="数据类型">数据类型</h1>
+<h2 id="string">string</h2>
+<h2 id="list">list</h2>
+<h2 id="hash">hash</h2>
+<h2 id="set">set</h2>
+<h2 id="sorted_sort">sorted_sort</h2>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Redis学习笔记(一)]]></title>
         <id>https://edyip.github.io/post/redis-xue-xi-bi-ji/</id>
@@ -86,6 +100,11 @@ fd nonblock (fd文件编号符)<br>
 <img src="https://edyip.github.io/post-images/1607063067623.jpg" alt="" loading="lazy"></p>
 <h3 id="sendfile">sendfile</h3>
 <figure data-type="image" tabindex="3"><img src="https://edyip.github.io/post-images/1607065472233.jpg" alt="" loading="lazy"></figure>
+<h2 id="bio弊端">BIO弊端</h2>
+<p>JVM：一个线程的成本 1MB （线程栈）<br>
+线程多的弊端：<br>
+1.线程多了调度成本CPU浪费<br>
+2.内存成本</p>
 ]]></content>
     </entry>
     <entry>
